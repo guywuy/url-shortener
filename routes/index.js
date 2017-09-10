@@ -18,7 +18,11 @@ router.get('/', (req, res, next)=>{
 //User has submitted a URL. Add to db and respond with shortened corresponding key
 router.post('/', (req, res)=>{
   let submittedURL = req.body.originalURL;
-  console.log('Submitted url ', submittedURL);
+  let shortenedKey = Math.floor(Math.random()*10000);
+  let dbItemToInsert = {
+      originalURL : submittedURL,
+      shortURL : shortenedKey
+    }
 
   // Use connect method to connect to the Server
   MongoClient.connect(url, function (err, db) {
@@ -26,8 +30,11 @@ router.post('/', (req, res)=>{
       console.log('Unable to connect to the mongoDB server. Error:', err);
     } else {
       console.log('Connection established to', url);
+      //Insert the item
+      db.collection('urlcollection').insertOne(dbItemToInsert, function(err, result) {
 
-      // do some work here with the database.
+        if(err) throw err;
+      });
 
       //Close connection
       console.log('Closing connection to ', url);
@@ -35,16 +42,39 @@ router.post('/', (req, res)=>{
     }
   });
 
-  res.send(submittedURL);
+  res.json(JSON.stringify(shortenedKey));
 })
 
 // Get a shortened url key
-router.get('/:key', (req, res)=>{
-  let originalURL;
-  let errorMsg = "Oops, couldn't find that. Are you sure you have the right url?";
+router.get('/:shortkey', (req, res)=>{
+  let shortKeyParam = parseInt(req.params.shortkey, 10);
+  console.log('Short key from URL ', shortKeyParam);
   //Check db for :key, if it exists, redirect user to that, else, error
+  MongoClient.connect(url, function (err, db) {
+    if (err) {
+      console.log('Unable to connect to the mongoDB server. Error:', err);
+    } else {
+      console.log('Connection established to', url);
 
-  res.redirect(originalURL);
+      //http://mongodb.github.io/node-mongodb-native/2.1/tutorials/crud/
+      db.collection('urlcollection').find({shortURL:shortKeyParam}).next(function(err, doc) {
+        let errorMsg = "Oops, couldn't find that. Are you sure you have the right url?";
+        if (err) res.send(errorMsg);
+        // console.log(doc);
+        if (doc){
+          res.redirect(doc.originalURL);
+        } else {
+          res.send(errorMsg);
+        }
+        // console.log(doc.originalURL);
+        // originalURL = doc.originalURL;
+      });
+
+      //Close connection
+      console.log('Closing connection to ', url);
+      db.close();
+    }
+  });
 })
 
 module.exports = router;
