@@ -1,0 +1,15 @@
+{
+  "name": "url_shortener",
+  "version": "1.0.0",
+  "description": "Paste in a url, receive a shortened url",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "guywuy",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.0",
+    "mongodb": "^2.2.31"
+  }
+}
