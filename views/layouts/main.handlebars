@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<head lang='en-GB'>
+  <meta charset="utf-8">
+  <meta title="URL Shortener">
+  <meta description="Shorten a URL">
+
+  <style type="text/css">
+    body {
+      background: rgb(252, 225, 190);
+    }
+    #wrapper {
+      margin:0 auto;
+      width: 100%;
+      max-width: 1000px;
+      text-align: center;
+      margin-top: 30vh;
+    }
+    h1, p {
+      font-family: sans-serif;
+      color: rgb(80, 80, 80);
+    }
+	p {
+		font-size: 1.1em;
+	}
+    @keyframes borderRad{
+      0% {
+        border-radius: 6px;
+      }
+      100% {
+        border-radius: 18px;
+      }
+    }
+    input {
+      width:100%;
+      padding:1em 2em;
+      background: rgba(255, 240, 250, 0.6);
+      border: 2px dashed blue;
+      border-radius: 6px;
+      animation: borderRad 6s alternate infinite;
+    }
+	.copiable-link{
+		font-size: 1.2em;
+		color: rgb(48, 131, 62);
+	}
+	.copiable-link::selection{
+		background-color: orange;
+	}
+    </style>
+</head>
+<body>
+  <div id='wrapper'>  
+    {{{body}}}
+  </div>
+</body>

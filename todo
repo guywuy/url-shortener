@@ -5,7 +5,5 @@ Functionality:
 
 Add validation. Make sure (as user types) that url starts with http:// or www. (or else add them either when adding to db, or when redirecting as link on success page.)
 
-Add template - one view for homepage, one for success page.
-
   To implement later - can ask user if they want a specific string to be short URL - if it doesn't already exist in database, use it.
   Use hash function rather than random number to avoid collisions.

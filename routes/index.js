@@ -1,5 +1,10 @@
 const express = require('express'),
-router = express.Router();
+app = express(),
+exphbs = require('express-handlebars');
+app.engine('handlebars', exphbs({
+	defaultLayout: 'main'
+}));
+app.set('view engine', 'handlebars');
 
 //-----------------------------------DATABASE--------------------------
 //lets require/import the mongodb native drivers.
@@ -13,11 +18,11 @@ var url = 'mongodb://guy:guy@ds133044.mlab.com:33044/urls';
 
 
 // Get homepage
-router.get('/', (req, res, next)=>{
-  res.sendFile('../public/index.html', {root: __dirname});
+app.get('/', (req, res, next)=>{
+  res.render("home");
 })
 //User has submitted a URL. Add to db and respond with shortened corresponding key
-router.post('/', (req, res)=>{
+app.post('/', (req, res)=>{
   let submittedURL = req.body.originalURL;
   let shortenedKey = Math.floor(Math.random()*10000);
   let dbItemToInsert = {
@@ -43,11 +48,11 @@ router.post('/', (req, res)=>{
     }
   });
   let fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl + shortenedKey;
-  res.send(`Thank you. Your URL is available at: <a href=${fullUrl}>${fullUrl}</a>`);
+  res.render('success', { 'link': fullUrl });
 })
 
 // Get a shortened url key
-router.get('/:shortkey', (req, res)=>{
+app.get('/:shortkey', (req, res)=>{
   let shortKeyParam = parseInt(req.params.shortkey, 10);
   console.log('Short key from URL ', shortKeyParam);
   //Check db for :key, if it exists, redirect user to that, else, error
@@ -78,4 +83,4 @@ router.get('/:shortkey', (req, res)=>{
   });
 })
 
-module.exports = router;
+module.exports = app;
