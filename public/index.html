@@ -2,11 +2,46 @@
 <head lang='en-GB'>
   <meta charset="utf-8">
   <meta title="URL Shortener">
+  <meta description="Shorten a URL">
 
+  <style type="text/css">
+    body {
+      background: rgb(252, 225, 190);
+    }
+    #wrapper {
+      margin:0 auto;
+      width: 100%;
+      max-width: 1000px;
+      text-align: center;
+      margin-top: 30vh;
+    }
+    h1 {
+      font-family: sans-serif;
+      color: rgb(80, 80, 80);
+    }
+    @keyframes borderRad{
+      0% {
+        border-radius: 6px;
+      }
+      100% {
+        border-radius: 18px;
+      }
+    }
+    input {
+      width:100%;
+      padding:1em 2em;
+      background: rgba(255, 240, 250, 0.6);
+      border: 2px dashed blue;
+      border-radius: 6px;
+      animation: borderRad 6s alternate infinite;
+    }
+    </style>
 </head>
 <body>
-  <h1>Shorten a URL!</h1>
-  <form method="post">
-    <input type='text' name='originalURL' value='' placeholder="URL goes here" autofocus>
-  </form>
+  <div id='wrapper'>  
+    <h1 style='font-family: sans-serif'>Shorten a URL!</h1>
+    <form method="post">
+      <input type='text' name='originalURL' value='' placeholder="URL goes here" autofocus>
+    </form>
+  </div>
 </body>

@@ -7,6 +7,7 @@ var mongodb = require('mongodb');
 //We need to work with "MongoClient" interface in order to connect to a mongodb server.
 var MongoClient = mongodb.MongoClient;
 // Connection URL. This is where your mongodb server is running.
+// Standard URI format: mongodb://[dbuser:dbpassword@]host:port/dbname
 var url = 'mongodb://guy:guy@ds133044.mlab.com:33044/urls';
 
 
