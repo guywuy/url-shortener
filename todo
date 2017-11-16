@@ -1,10 +1,11 @@
-Implement functionality!!
-  - Get / route - Render home page with input
+Functionality:
+  - Get / route - Render home page with input form
   - Post / route,  add full URL to database with corresponding short url key, return short url to user
   - For other routes, check key of URL route in db, if it exists, redirect to originalURL, else error
 
-Make shortURL value unique so there can't be more than one for an originalURL.
+Add validation. Make sure (as user types) that url starts with http:// or www. (or else add them either when adding to db, or when redirecting as link on success page.)
 
-Add validation. Make sure (as user types) that url starts with http:// or www.
+Add template - one view for homepage, one for success page.
 
   To implement later - can ask user if they want a specific string to be short URL - if it doesn't already exist in database, use it.
+  Use hash function rather than random number to avoid collisions.

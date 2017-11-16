@@ -42,8 +42,8 @@ router.post('/', (req, res)=>{
       db.close();
     }
   });
-
-  res.json(JSON.stringify(shortenedKey));
+  let fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl + shortenedKey;
+  res.send(`Thank you. Your URL is available at: <a href=${fullUrl}>${fullUrl}</a>`);
 })
 
 // Get a shortened url key
