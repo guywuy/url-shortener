@@ -15,6 +15,15 @@ var MongoClient = mongodb.MongoClient;
 // Standard URI format: mongodb://[dbuser:dbpassword@]host:port/dbname
 var url = 'mongodb://guy:guy@ds133044.mlab.com:33044/urls';
 
+//return a random int from 0-9
+function generateRandomInt(){
+  return Math.floor(Math.random()*10)
+}
+//return a random char from a-z
+function generateRandomChar(){
+  const chars = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'x', 'y', 'z'];
+  return chars[Math.floor(Math.random()*chars.length)]
+}
 
 
 // Get homepage
@@ -26,22 +35,23 @@ app.post('/', (req, res)=>{
   let submittedURL = req.body.originalURL;
   let httpReg = /^http/g;
   if(!httpReg.test(submittedURL)) submittedURL = 'http://' + submittedURL;
-
-  let shortenedKey = Math.floor(Math.random()*10000);
+  
+  //generate short key of form [int, char, int, char, int, char]
+  let shortenedKey = generateRandomInt() + generateRandomInt() + generateRandomInt() + generateRandomChar() + generateRandomChar() + generateRandomChar();
   let dbItemToInsert = {
       originalURL : submittedURL,
       shortURL : shortenedKey
     }
-
+    
   // Use connect method to connect to the Server
   MongoClient.connect(url, function (err, db) {
     if (err) {
       console.log('Unable to connect to the mongoDB server. Error:', err);
     } else {
       console.log('Connection established to', url);
+
       //Insert the item
       db.collection('urlcollection').insertOne(dbItemToInsert, function(err, result) {
-
         if(err) throw err;
       });
 
@@ -56,8 +66,8 @@ app.post('/', (req, res)=>{
 
 // Get a shortened url key
 app.get('/:shortkey', (req, res)=>{
-  let shortKeyParam = parseInt(req.params.shortkey, 10);
-  console.log('Short key from URL ', shortKeyParam);
+  let shortKeyParam = req.params.shortkey;
+
   //Check db for :key, if it exists, redirect user to that, else, error
   MongoClient.connect(url, function (err, db) {
     if (err) {
@@ -67,16 +77,12 @@ app.get('/:shortkey', (req, res)=>{
 
       //http://mongodb.github.io/node-mongodb-native/2.1/tutorials/crud/
       db.collection('urlcollection').find({shortURL:shortKeyParam}).next(function(err, doc) {
-        let errorMsg = "Oops, couldn't find that. Are you sure you have the right url?";
-        if (err) res.send(errorMsg);
-        // console.log(doc);
+        if (err) res.render('error');
         if (doc){
           res.redirect(doc.originalURL);
         } else {
-          res.send(errorMsg);
+          res.render('error');
         }
-        // console.log(doc.originalURL);
-        // originalURL = doc.originalURL;
       });
 
       //Close connection
