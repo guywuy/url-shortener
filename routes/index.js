@@ -24,6 +24,9 @@ app.get('/', (req, res, next)=>{
 //User has submitted a URL. Add to db and respond with shortened corresponding key
 app.post('/', (req, res)=>{
   let submittedURL = req.body.originalURL;
+  let httpReg = /^http/g;
+  if(!httpReg.test(submittedURL)) submittedURL = 'http://' + submittedURL;
+
   let shortenedKey = Math.floor(Math.random()*10000);
   let dbItemToInsert = {
       originalURL : submittedURL,
