@@ -1,7 +1,1 @@
-Functionality:
-  - Get / route - Render home page with input form
-  - Post / route,  add full URL to database with corresponding short url key, return short url to user
-  - For other routes, check key of URL route in db, if it exists, redirect to originalURL, else error
-
-
   To implement later - can ask user if they want a specific string to be short URL - if it doesn't already exist in database, use it.

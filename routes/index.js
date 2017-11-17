@@ -36,8 +36,8 @@ app.post('/', (req, res)=>{
   let httpReg = /^http/g;
   if(!httpReg.test(submittedURL)) submittedURL = 'http://' + submittedURL;
   
-  //generate short key of form [int, char, int, char, int, char]
-  let shortenedKey = generateRandomInt() + generateRandomInt() + generateRandomInt() + generateRandomChar() + generateRandomChar() + generateRandomChar();
+  //generate short key of form [char, char, char, int, int, int]
+  let shortenedKey = generateRandomChar() + generateRandomChar() + generateRandomChar() + generateRandomInt() + generateRandomInt() + generateRandomInt();
   let dbItemToInsert = {
       originalURL : submittedURL,
       shortURL : shortenedKey
